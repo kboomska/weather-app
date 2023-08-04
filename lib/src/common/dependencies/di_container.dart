@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:weather_service/src/feature/authentication/data/api/authentication_network_data_provider.dart';
-import 'package:weather_service/src/feature/authentication/data/repository/authentication_repository.dart';
-import 'package:weather_service/src/feature/authentication/widget/authentication_screen.dart';
+import 'package:weather_service/src/feature/login/data/api/login_network_data_provider.dart';
+import 'package:weather_service/src/feature/login/data/repository/login_repository.dart';
+import 'package:weather_service/src/feature/login/widget/login_screen.dart';
 import 'package:weather_service/src/common/network/network_client.dart';
 import 'package:weather_service/src/common/router/app_navigation.dart';
 import 'package:weather_service/src/common/network/http_client.dart';
@@ -44,21 +44,21 @@ final class DIContainer {
         httpClient: _httpClient(),
       );
 
-  /// Create [AuthenticationNetworkDataProviderImpl]
-  IAuthenticationNetworkDataProvider _makeAuthenticationNetworkDataProvider() =>
-      AuthenticationNetworkDataProviderImpl(
+  /// Create [LoginNetworkDataProviderImpl]
+  ILoginNetworkDataProvider _makeLoginNetworkDataProvider() =>
+      LoginNetworkDataProviderImpl(
         networkClient: _makeNetworkClient(),
       );
 
-  /// Create [AuthenticationRepositoryImpl]
-  IAuthenticationRepository _makeAuthenticationRepository() =>
-      AuthenticationRepositoryImpl(
-        networkDataProvider: _makeAuthenticationNetworkDataProvider(),
+  /// Create [LoginRepositoryImpl]
+  ILoginRepository _makeLoginRepository() =>
+      LoginRepositoryImpl(
+        networkDataProvider: _makeLoginNetworkDataProvider(),
       );
 
-  /// Create [AuthenticationBloc]
-  // AuthenticationBloc _makeAuthenticationBloc() => AuthenticationBloc(
-  //       authenticationRepository: _makeAuthenticationRepository(),
+  /// Create [LoginBloc]
+  // LoginBloc _makeLoginBloc() => LoginBloc(
+  //       loginRepository: _makeLoginRepository(),
   //     );
 }
 
@@ -68,15 +68,15 @@ final class ScreenFactoryImpl implements IScreenFactory {
   const ScreenFactoryImpl(this.diContainer);
 
   // @override
-  // Widget makeAuthenticationScreen() {
+  // Widget makeLoginScreen() {
   //   return BlocProvider(
-  //     create: (_) => diContainer._makeAuthenticationBloc(),
-  //     child: const AuthenticationScreen(),
+  //     create: (_) => diContainer._makeLoginBloc(),
+  //     child: const LoginScreen(),
   //   );
   // }
 
   @override
-  Widget makeAuthenticationScreen() {
-    return const AuthenticationScreen();
+  Widget makeLoginScreen() {
+    return const LoginScreen();
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:weather_service/src/common/router/app_navigation_route_names.dart';
 
 abstract interface class IAppNavigation {
-  Route<Object> onGenerateRoute(RouteSettings settings);
   Map<String, Widget Function(BuildContext)> get routes;
 }
 
@@ -26,7 +25,7 @@ class App extends StatelessWidget {
       //   ),
       // ),
       routes: navigation.routes,
-      initialRoute: AppNavigationRouteNames.auth,
+      initialRoute: AppNavigationRouteNames.login,
     );
   }
 }

@@ -1,4 +1,4 @@
 abstract final class AppNavigationRouteNames {
-  static const auth = '/';
+  static const login = '/';
   static const weather = '/weather';
 }
