@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:weather_service/src/common/theme/app_text_field_style.dart';
+import 'package:weather_service/src/common/theme/app_button_style.dart';
 import 'package:weather_service/src/common/theme/app_typography.dart';
 import 'package:weather_service/src/common/theme/app_colors.dart';
 
@@ -14,8 +16,12 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _LoginScreenHeader(),
+              _LoginScreenEmailTextField(),
+              _LoginScreenPasswordTextField(),
+              _LoginScreenLoginButton(),
             ],
           ),
         ),
@@ -30,23 +36,164 @@ class _LoginScreenHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.only(top: 24.0),
+      padding: EdgeInsets.only(top: 24.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Вход',
-            style: AppTypography.header,
+            style: AppTypography.h1,
           ),
           SizedBox(
             height: 12,
           ),
           Text(
             'Введите данные для входа',
-            style: AppTypography.greyText,
+            style: AppTypography.b2,
           ),
         ],
       ),
     );
   }
+}
+
+class _LoginScreenEmailTextField extends StatefulWidget {
+  const _LoginScreenEmailTextField();
+
+  @override
+  State<_LoginScreenEmailTextField> createState() =>
+      _LoginScreenEmailTextFieldState();
+}
+
+class _LoginScreenEmailTextFieldState
+    extends State<_LoginScreenEmailTextField> {
+  final _loginInputController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
+      child: TextField(
+        controller: _loginInputController,
+        style: AppTypography.b1MainText,
+        cursorColor: AppColors.primaryRed,
+        cursorHeight: 24,
+        onChanged: (text) {},
+        decoration: AppTextFieldStyle.inputDecoration(labelText: 'Email'),
+        keyboardType: TextInputType.emailAddress,
+      ),
+    );
+  }
+}
+
+class _LoginScreenPasswordTextField extends StatefulWidget {
+  const _LoginScreenPasswordTextField();
+
+  @override
+  State<_LoginScreenPasswordTextField> createState() =>
+      _LoginScreenPasswordTextFieldState();
+}
+
+class _LoginScreenPasswordTextFieldState
+    extends State<_LoginScreenPasswordTextField> {
+  final _passwordInputController = TextEditingController();
+  bool isObscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    InkWell suffixWidget = InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: () {
+        setState(() {
+          isObscure = !isObscure;
+        });
+      },
+      child: isObscure
+          ? const Icon(
+              Icons.visibility,
+              color: AppColors.primaryBlue,
+              size: 24,
+            )
+          : const Icon(
+              Icons.visibility_off,
+              color: AppColors.primaryBlue,
+              size: 24,
+            ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
+      child: TextField(
+        controller: _passwordInputController,
+        style: AppTypography.b1MainText,
+        cursorColor: AppColors.primaryRed,
+        cursorHeight: 24,
+        onChanged: (text) {},
+        obscureText: isObscure,
+        decoration: AppTextFieldStyle.inputDecoration(
+          labelText: 'Пароль',
+          suffixWidget: suffixWidget,
+        ),
+        keyboardType: TextInputType.text,
+      ),
+    );
+  }
+}
+
+class _LoginScreenLoginButton extends StatelessWidget {
+  const _LoginScreenLoginButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24.0),
+      child: SizedBox.fromSize(
+        size: const Size.fromHeight(48.0),
+        child: OutlinedButton(
+          onPressed: () {},
+          style: AppButtonStyle.blueButton,
+          child: const Text(
+            'Войти',
+            style: AppTypography.b1Medium,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget makeSuffix({
+  required bool isObscure,
+  required String assetImage,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 8.0),
+    child: InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      // onTap: () {
+      //   isObscure = !isObscure;
+      // },
+      // child: isObscure
+      //     ? const Icon(
+      //         Icons.visibility,
+      //         color: AppColors.primaryBlue,
+      //         size: 24,
+      //       )
+      //     : const Icon(
+      //         Icons.visibility_off,
+      //         color: AppColors.primaryBlue,
+      //         size: 24,
+      //       ),
+      child: SizedBox(
+        height: 24.0,
+        width: 24.0,
+        child: Image.asset(
+          assetImage,
+          color: AppColors.primaryBlue,
+        ),
+      ),
+    ),
+  );
 }
