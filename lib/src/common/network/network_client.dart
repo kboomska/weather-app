@@ -10,6 +10,14 @@ abstract interface class INetworkClient {
     String path,
     T Function(dynamic json) parser,
   );
+
+  Future<T> post<T>(
+    String host,
+    String path,
+    T Function(dynamic json) parser,
+    Map<String, dynamic> bodyParameters, [
+    Map<String, dynamic>? urlParameters,
+  ]);
 }
 
 class NetworkClientImpl implements INetworkClient {
@@ -18,6 +26,15 @@ class NetworkClientImpl implements INetworkClient {
   const NetworkClientImpl({
     required IHttpClient httpClient,
   }) : _httpClient = httpClient;
+
+  Uri _makeUri(String host, String path, [Map<String, dynamic>? parameters]) {
+    final uri = Uri.parse('$host$path');
+    if (parameters != null) {
+      return uri.replace(queryParameters: parameters);
+    } else {
+      return uri;
+    }
+  }
 
   @override
   Future<T> get<T>(
@@ -29,6 +46,35 @@ class NetworkClientImpl implements INetworkClient {
 
     try {
       final request = await _httpClient.getUrl(url);
+      final response = await request.close();
+      final dynamic json = (await response.jsonDecode());
+      final result = parser(json);
+      return result;
+    } on SocketException {
+      throw NetworkClientException(NetworkClientExceptionType.network);
+    } catch (_) {
+      throw NetworkClientException(NetworkClientExceptionType.other);
+    }
+  }
+
+  @override
+  Future<T> post<T>(
+    String host,
+    String path,
+    T Function(dynamic json) parser,
+    Map<String, dynamic> bodyParameters, [
+    Map<String, dynamic>? urlParameters,
+  ]) async {
+    final url = _makeUri(
+      host,
+      path,
+      urlParameters,
+    );
+
+    try {
+      final request = await _httpClient.postUrl(url);
+      request.headers.contentType = ContentType.json;
+      request.write(jsonEncode(bodyParameters));
       final response = await request.close();
       final dynamic json = (await response.jsonDecode());
       final result = parser(json);

@@ -23,11 +23,10 @@ abstract final class AppTextFieldStyle {
         ),
       ),
       constraints: BoxConstraints.tight(const Size.fromHeight(64.0)),
-      // suffixIcon: suffixIcon,
-      suffix: suffixWidget,
-      // suffixIconConstraints: BoxConstraints.tight(
-      //   const Size(24, 24),
-      // ),
+      suffixIcon: suffixWidget,
+      suffixIconConstraints: BoxConstraints.tight(
+        const Size(32, 24),
+      ),
     );
   }
 }

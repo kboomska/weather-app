@@ -68,18 +68,20 @@ class _LoginScreenEmailTextField extends StatefulWidget {
 
 class _LoginScreenEmailTextFieldState
     extends State<_LoginScreenEmailTextField> {
-  final _loginInputController = TextEditingController();
+  // final _loginInputController = TextEditingController(text: 'test@mail.ru');
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
       child: TextField(
-        controller: _loginInputController,
+        onChanged: (email) {
+          // print(email);
+        },
+        // controller: _loginInputController,
         style: AppTypography.b1MainText,
         cursorColor: AppColors.primaryRed,
         cursorHeight: 24,
-        onChanged: (text) {},
         decoration: AppTextFieldStyle.inputDecoration(labelText: 'Email'),
         keyboardType: TextInputType.emailAddress,
       ),
@@ -97,7 +99,7 @@ class _LoginScreenPasswordTextField extends StatefulWidget {
 
 class _LoginScreenPasswordTextFieldState
     extends State<_LoginScreenPasswordTextField> {
-  final _passwordInputController = TextEditingController();
+  // final _passwordInputController = TextEditingController(text: 'testpass');
   bool isObscure = true;
 
   @override
@@ -126,11 +128,13 @@ class _LoginScreenPasswordTextFieldState
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
       child: TextField(
-        controller: _passwordInputController,
+        onChanged: (password) {
+          // print(password);
+        },
+        // controller: _passwordInputController,
         style: AppTypography.b1MainText,
         cursorColor: AppColors.primaryRed,
         cursorHeight: 24,
-        onChanged: (text) {},
         obscureText: isObscure,
         decoration: AppTextFieldStyle.inputDecoration(
           labelText: 'Пароль',
