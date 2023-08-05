@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_service/src/common/theme/app_text_field_style.dart';
 import 'package:weather_service/src/common/theme/app_button_style.dart';
 import 'package:weather_service/src/common/theme/app_typography.dart';
+import 'package:weather_service/src/common/resources/resources.dart';
 import 'package:weather_service/src/common/theme/app_colors.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -101,25 +102,25 @@ class _LoginScreenPasswordTextFieldState
 
   @override
   Widget build(BuildContext context) {
-    InkWell suffixWidget = InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onTap: () {
-        setState(() {
-          isObscure = !isObscure;
-        });
-      },
-      child: isObscure
-          ? const Icon(
-              Icons.visibility,
-              color: AppColors.primaryBlue,
-              size: 24,
-            )
-          : const Icon(
-              Icons.visibility_off,
-              color: AppColors.primaryBlue,
-              size: 24,
-            ),
+    Widget suffixWidget = Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          setState(() {
+            isObscure = !isObscure;
+          });
+        },
+        child: SizedBox(
+          height: 24.0,
+          width: 24.0,
+          child: Image.asset(
+            isObscure ? AppIcons.visibility : AppIcons.visibilityOff,
+            color: AppColors.primaryBlue,
+          ),
+        ),
+      ),
     );
 
     return Padding(
@@ -161,39 +162,4 @@ class _LoginScreenLoginButton extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget makeSuffix({
-  required bool isObscure,
-  required String assetImage,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 8.0),
-    child: InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      // onTap: () {
-      //   isObscure = !isObscure;
-      // },
-      // child: isObscure
-      //     ? const Icon(
-      //         Icons.visibility,
-      //         color: AppColors.primaryBlue,
-      //         size: 24,
-      //       )
-      //     : const Icon(
-      //         Icons.visibility_off,
-      //         color: AppColors.primaryBlue,
-      //         size: 24,
-      //       ),
-      child: SizedBox(
-        height: 24.0,
-        width: 24.0,
-        child: Image.asset(
-          assetImage,
-          color: AppColors.primaryBlue,
-        ),
-      ),
-    ),
-  );
 }
