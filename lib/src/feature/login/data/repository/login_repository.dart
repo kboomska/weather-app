@@ -13,6 +13,8 @@ abstract interface class ILoginRepository {
     required String email,
     required String password,
   });
+
+  Future<void> logOut();
 }
 
 class LoginRepositoryImpl implements ILoginRepository {
@@ -42,5 +44,10 @@ class LoginRepositoryImpl implements ILoginRepository {
       email: email,
       password: password,
     );
+  }
+
+  @override
+  Future<void> logOut() async {
+    await _firebaseAuth.signOut();
   }
 }

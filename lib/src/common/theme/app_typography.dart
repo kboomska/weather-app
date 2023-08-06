@@ -53,4 +53,12 @@ abstract final class AppTypography {
     height: 22 / 15,
     fontFamily: defaultFontFamily,
   );
+
+  static const b2Medium = TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
+    height: 22 / 15,
+    fontFamily: defaultFontFamily,
+  );
 }

@@ -72,6 +72,7 @@ final class ScreenFactoryImpl implements IScreenFactory {
 
   const ScreenFactoryImpl(this.diContainer);
 
+  /// Create [LoginScreen]
   @override
   Widget makeLoginScreen() {
     return BlocProvider(
@@ -80,16 +81,20 @@ final class ScreenFactoryImpl implements IScreenFactory {
     );
   }
 
-  // @override
-  // Widget makeLoginScreen() {
-  //   return const LoginScreen();
-  // }
-
+  /// Create [WeatherScreen]
   @override
   Widget makeWeatherScreen() {
-    return const WeatherScreen();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => diContainer._makeLoginBloc(),
+        ),
+      ],
+      child: const WeatherScreen(),
+    );
   }
 
+  /// Create [LoginScreen] or [WeatherScreen]
   @override
   Widget makeLoginOrWeatherScreen() {
     return StreamBuilder<User?>(

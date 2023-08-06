@@ -26,6 +26,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           await _onLoginEvent$PasswordChanged(event, emit);
         } else if (event is LoginEvent$OnSubmitted) {
           await _onLoginEvent$OnSubmitted(event, emit);
+        } else if (event is LoginEvent$Logout) {
+          await _onLoginEvent$Logout(event, emit);
         }
       },
       transformer: sequential(),
@@ -79,6 +81,37 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(
         LoginState.idle(
             email: state.email, password: state.password, error: error),
+      );
+    }
+  }
+
+  Future<void> _onLoginEvent$Logout(
+    LoginEvent$Logout event,
+    Emitter<LoginState> emit,
+  ) async {
+    if (state is _LoginState$Processing) return;
+
+    emit(LoginState.processing(email: state.email, password: state.password));
+
+    String? error;
+    try {
+      await _loginRepository.logOut().timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      error =
+          'Превышено время ожидания ответа от сервера. Повторите попытку позднее';
+    } on NetworkClientException catch (e) {
+      switch (e.type) {
+        case NetworkClientExceptionType.network:
+          error = 'Сервер не доступен. Проверьте подключение к сети интернет';
+        case NetworkClientExceptionType.other:
+          error = 'Произошла ошибка. Попробуйте еще раз';
+      }
+    } catch (_) {
+      error = 'Неизвестная ошибка, повторите попытку';
+      rethrow;
+    } finally {
+      emit(
+        LoginState.idle(email: '', password: '', error: error),
       );
     }
   }

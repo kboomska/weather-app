@@ -49,3 +49,17 @@ final class LoginEvent$OnSubmitted extends LoginEvent {
   @override
   int get hashCode => 0;
 }
+
+final class LoginEvent$Logout extends LoginEvent {
+  const LoginEvent$Logout();
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is LoginEvent$Logout;
+  }
+
+  @override
+  int get hashCode => 0;
+}
