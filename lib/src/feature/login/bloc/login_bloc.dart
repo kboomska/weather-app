@@ -57,7 +57,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String? error;
     try {
       await _loginRepository
-          .login(email: state.email, password: state.password)
+          .logInWithEmailAndPassword(
+            email: state.email,
+            password: state.password,
+          )
           .timeout(const Duration(seconds: 5));
     } on TimeoutException {
       error =

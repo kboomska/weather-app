@@ -14,12 +14,12 @@ import 'package:weather_service/src/common/network/http_client.dart';
 import 'package:weather_service/src/common/widget/app.dart';
 import 'package:weather_service/main.dart';
 
-IAppFactory makeAppFactory() => const AppFactoryImpl();
+IAppFactory makeAppFactory() => AppFactoryImpl();
 
 final class AppFactoryImpl implements IAppFactory {
-  final _diContainer = const DIContainer();
+  final _diContainer = DIContainer();
 
-  const AppFactoryImpl();
+  AppFactoryImpl();
 
   /// Create [App]
   @override
@@ -29,7 +29,9 @@ final class AppFactoryImpl implements IAppFactory {
 }
 
 final class DIContainer {
-  const DIContainer();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  DIContainer();
 
   /// Create [ScreenFactoryImpl]
   IScreenFactory _makeScreenFactory() => ScreenFactoryImpl(this);
@@ -56,6 +58,7 @@ final class DIContainer {
   /// Create [LoginRepositoryImpl]
   ILoginRepository _makeLoginRepository() => LoginRepositoryImpl(
         networkDataProvider: _makeLoginNetworkDataProvider(),
+        firebaseAuth: _firebaseAuth,
       );
 
   /// Create [LoginBloc]
@@ -90,7 +93,7 @@ final class ScreenFactoryImpl implements IScreenFactory {
   @override
   Widget makeLoginOrWeatherScreen() {
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: diContainer._firebaseAuth.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return makeWeatherScreen();
