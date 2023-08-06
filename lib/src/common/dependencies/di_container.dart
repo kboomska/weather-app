@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:weather_service/src/feature/login/data/api/login_network_data_provider.dart';
 import 'package:weather_service/src/feature/login/data/repository/login_repository.dart';
+import 'package:weather_service/src/feature/weather/widget/weather_screen.dart';
 import 'package:weather_service/src/feature/login/widget/login_screen.dart';
 import 'package:weather_service/src/common/network/network_client.dart';
 import 'package:weather_service/src/common/router/app_navigation.dart';
@@ -51,8 +52,7 @@ final class DIContainer {
       );
 
   /// Create [LoginRepositoryImpl]
-  ILoginRepository _makeLoginRepository() =>
-      LoginRepositoryImpl(
+  ILoginRepository _makeLoginRepository() => LoginRepositoryImpl(
         networkDataProvider: _makeLoginNetworkDataProvider(),
       );
 
@@ -78,5 +78,24 @@ final class ScreenFactoryImpl implements IScreenFactory {
   @override
   Widget makeLoginScreen() {
     return const LoginScreen();
+  }
+
+  @override
+  Widget makeWeatherScreen() {
+    return const WeatherScreen();
+  }
+
+  @override
+  Widget makeLoginOrWeatherScreen() {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return makeWeatherScreen();
+        } else {
+          return makeLoginScreen();
+        }
+      },
+    );
   }
 }

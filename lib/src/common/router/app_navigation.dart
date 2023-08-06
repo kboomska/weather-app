@@ -5,6 +5,8 @@ import 'package:weather_service/src/common/widget/app.dart';
 
 abstract interface class IScreenFactory {
   Widget makeLoginScreen();
+  Widget makeWeatherScreen();
+  Widget makeLoginOrWeatherScreen();
 }
 
 class AppNavigationImpl implements IAppNavigation {
@@ -14,8 +16,10 @@ class AppNavigationImpl implements IAppNavigation {
 
   @override
   Map<String, Widget Function(BuildContext)> get routes => {
-        AppNavigationRouteNames.login: (_) =>
-            screenFactory.makeLoginScreen(),
-        // AppNavigationRouteNames.weather: (_) => screenFactory.makeWeatherScreen(),
+        AppNavigationRouteNames.login: (_) => screenFactory.makeLoginScreen(),
+        AppNavigationRouteNames.weather: (_) =>
+            screenFactory.makeWeatherScreen(),
+        AppNavigationRouteNames.root: (_) =>
+            screenFactory.makeLoginOrWeatherScreen(),
       };
 }

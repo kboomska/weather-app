@@ -16,16 +16,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Weather Service',
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   fontFamily: 'SFProDisplay',
-      //   splashColor: Colors.transparent,
-      //   highlightColor: Colors.transparent,
-      //   appBarTheme: const AppBarTheme(
-      //     backgroundColor: AppColors.appBackground,
-      //   ),
-      // ),
       routes: navigation.routes,
-      initialRoute: AppNavigationRouteNames.login,
+      initialRoute: AppNavigationRouteNames.root,
     );
   }
 }
