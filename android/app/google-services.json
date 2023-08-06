@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "684302097214",
+    "firebase_url": "https://weather-service-1a272-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "weather-service-1a272",
+    "storage_bucket": "weather-service-1a272.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684302097214:android:2d64f57015eb5185b16a6f",
+        "android_client_info": {
+          "package_name": "com.example.weather_service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684302097214-b7t3m1q3nbldfff1sl8b32hf9ki7krt1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaennSqIMUqWt7BDEIISKSWtYgC_X3ya0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684302097214-b7t3m1q3nbldfff1sl8b32hf9ki7krt1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
