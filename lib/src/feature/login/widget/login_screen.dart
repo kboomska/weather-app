@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:weather_service/src/common/theme/app_text_field_style.dart';
+import 'package:weather_service/src/feature/login/bloc/login_bloc.dart';
 import 'package:weather_service/src/common/theme/app_button_style.dart';
 import 'package:weather_service/src/common/theme/app_typography.dart';
 import 'package:weather_service/src/common/resources/resources.dart';
@@ -68,24 +71,27 @@ class _LoginScreenEmailTextField extends StatefulWidget {
 
 class _LoginScreenEmailTextFieldState
     extends State<_LoginScreenEmailTextField> {
-  // final _loginInputController = TextEditingController(text: 'test@mail.ru');
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
-      child: TextField(
-        onChanged: (email) {
-          // print(email);
-        },
-        // controller: _loginInputController,
-        style: AppTypography.b1MainText,
-        cursorColor: AppColors.primaryRed,
-        cursorHeight: 24,
-        decoration: AppTextFieldStyle.inputDecoration(labelText: 'Email'),
-        keyboardType: TextInputType.emailAddress,
-      ),
-    );
+    return BlocBuilder<LoginBloc, LoginState>(
+        buildWhen: (previous, current) => previous.email != current.email,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
+            child: TextField(
+              onChanged: (email) {
+                context
+                    .read<LoginBloc>()
+                    .add(LoginEvent$EmailChanged(email: email));
+              },
+              style: AppTypography.b1MainText,
+              cursorColor: AppColors.primaryRed,
+              cursorHeight: 24,
+              decoration: AppTextFieldStyle.inputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+          );
+        });
   }
 }
 
@@ -99,7 +105,6 @@ class _LoginScreenPasswordTextField extends StatefulWidget {
 
 class _LoginScreenPasswordTextFieldState
     extends State<_LoginScreenPasswordTextField> {
-  // final _passwordInputController = TextEditingController(text: 'testpass');
   bool isObscure = true;
 
   @override
@@ -125,24 +130,29 @@ class _LoginScreenPasswordTextFieldState
       ),
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
-      child: TextField(
-        onChanged: (password) {
-          // print(password);
-        },
-        // controller: _passwordInputController,
-        style: AppTypography.b1MainText,
-        cursorColor: AppColors.primaryRed,
-        cursorHeight: 24,
-        obscureText: isObscure,
-        decoration: AppTextFieldStyle.inputDecoration(
-          labelText: 'Пароль',
-          suffixWidget: suffixWidget,
-        ),
-        keyboardType: TextInputType.text,
-      ),
-    );
+    return BlocBuilder<LoginBloc, LoginState>(
+        buildWhen: (previous, current) => previous.password != current.password,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
+            child: TextField(
+              onChanged: (password) {
+                context
+                    .read<LoginBloc>()
+                    .add(LoginEvent$PasswordChanged(password: password));
+              },
+              style: AppTypography.b1MainText,
+              cursorColor: AppColors.primaryRed,
+              cursorHeight: 24,
+              obscureText: isObscure,
+              decoration: AppTextFieldStyle.inputDecoration(
+                labelText: 'Пароль',
+                suffixWidget: suffixWidget,
+              ),
+              keyboardType: TextInputType.text,
+            ),
+          );
+        });
   }
 }
 
@@ -156,7 +166,9 @@ class _LoginScreenLoginButton extends StatelessWidget {
       child: SizedBox.fromSize(
         size: const Size.fromHeight(48.0),
         child: OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<LoginBloc>().add(const LoginEvent$OnSubmitted());
+          },
           style: AppButtonStyle.blueButton,
           child: const Text(
             'Войти',
