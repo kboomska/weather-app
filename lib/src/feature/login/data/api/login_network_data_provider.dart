@@ -34,11 +34,11 @@ class LoginNetworkDataProviderImpl implements ILoginNetworkDataProvider {
     }
 
     final result = _networkClient.post(
-      Configuration.host,
-      Configuration.signInUrl,
+      Configuration.authHost,
+      Configuration.authSignInUrl,
       parser,
       parameters,
-      <String, dynamic>{'key': Configuration.apiKey},
+      <String, dynamic>{'key': Configuration.authApiKey},
     );
 
     return result;
