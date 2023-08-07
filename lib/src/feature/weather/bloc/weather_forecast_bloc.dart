@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:intl/intl.dart';
 
 import 'package:weather_service/src/feature/weather/data/repository/weather_forecast_repository.dart';
+import 'package:weather_service/src/feature/weather/model/weather_prepared_data.dart';
 import 'package:weather_service/src/common/network/network_client_exception.dart';
+import 'package:weather_service/src/feature/weather/model/weather_forecast.dart';
 
 part 'package:weather_service/src/feature/weather/bloc/weather_forecast_state.dart';
 part 'package:weather_service/src/feature/weather/bloc/weather_forecast_event.dart';
@@ -40,20 +44,22 @@ class WeatherForecastBloc
     Emitter<WeatherForecastState> emit,
   ) async {
     if (state is _WeatherForecastState$Processing) return;
-
     emit(WeatherForecastState.processing(
       latitude: state.latitude,
       longitude: state.longitude,
+      forecast: state.forecast,
     ));
 
     String? error;
+    List<WeatherPreparedData> forecast = <WeatherPreparedData>[];
     try {
-      final forecast = await _weatherForecastRepository
+      final rawForecast = await _weatherForecastRepository
           .getWeatherForecast(
             latitude: event.latitude,
             longitude: event.longitude,
           )
           .timeout(const Duration(seconds: 5));
+      forecast.addAll(parseForecast(rawForecast));
     } on TimeoutException {
       error =
           'Превышено время ожидания ответа от сервера. Повторите попытку позднее';
@@ -70,8 +76,41 @@ class WeatherForecastBloc
     } finally {
       emit(
         WeatherForecastState.idle(
-            latitude: state.latitude, longitude: state.longitude, error: error),
+            latitude: event.latitude,
+            longitude: event.longitude,
+            forecast: forecast,
+            error: error),
       );
     }
+  }
+
+  List<WeatherPreparedData> parseForecast(WeatherForecast rawForecast) {
+    List<WeatherPreparedData> result = [];
+    final listOfRawForecast = rawForecast.list;
+    if (listOfRawForecast != null) {
+      for (WheatherList v in listOfRawForecast) {
+        final dateTime = DateTime.fromMillisecondsSinceEpoch(
+          (v.dt ?? 1691431200) * 1000,
+        );
+
+        result.add(
+          WeatherPreparedData(
+            date: DateFormat.MMMd('RU_ru').format(dateTime),
+            time: DateFormat.Hm('RU_ru').format(dateTime),
+            temperature: v.main?.temp?.round().toString() ?? '--',
+            tempMin: v.main?.tempMin?.round().toString() ?? '',
+            tempMax: v.main?.tempMax?.round().toString() ?? '',
+            description: v.weather?[0].description ?? '',
+            windSpeed: v.wind?.speed?.round().toString() ?? '',
+            windDirection: v.wind?.deg.toString() ?? '',
+            humidity: v.main?.humidity?.round().toString() ?? '',
+            humidityDescription: (v.main?.humidity?.round() ?? 0) <= 50
+                ? 'Низкая влажность'
+                : 'Высокая влажность',
+          ),
+        );
+      }
+    }
+    return result;
   }
 }

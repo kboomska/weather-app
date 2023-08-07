@@ -35,7 +35,7 @@ class WeatherForecastNetworkDataProviderImpl
       <String, dynamic>{
         'lat': latitude,
         'lon': longitude,
-        'untis': 'metric',
+        'units': 'metric',
         'cnt': '5',
         'lang': 'ru',
         'appid': Configuration.weatherAppId,

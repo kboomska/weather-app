@@ -42,7 +42,7 @@ class WheatherList {
   Clouds? clouds;
   Wind? wind;
   int? visibility;
-  int? pop;
+  double? pop;
   Sys? sys;
   String? dtTxt;
 
@@ -69,7 +69,7 @@ class WheatherList {
     clouds = json['clouds'] != null ? Clouds.fromJson(json['clouds']) : null;
     wind = json['wind'] != null ? Wind.fromJson(json['wind']) : null;
     visibility = json['visibility'];
-    pop = json['pop'];
+    pop = json['pop'].toDouble();
     sys = json['sys'] != null ? Sys.fromJson(json['sys']) : null;
     dtTxt = json['dt_txt'];
   }

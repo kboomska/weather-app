@@ -22,6 +22,14 @@ abstract final class AppTypography {
     fontFamily: defaultFontFamily,
   );
 
+  static const b1Weather = TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.w400,
+    fontSize: 17,
+    height: 24 / 17,
+    fontFamily: defaultFontFamily,
+  );
+
   static const b1MainText = TextStyle(
     color: AppColors.typographyHeader,
     fontWeight: FontWeight.w400,
@@ -60,5 +68,13 @@ abstract final class AppTypography {
     fontSize: 15,
     height: 22 / 15,
     fontFamily: defaultFontFamily,
+  );
+
+  static const temp = TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.w500,
+    fontSize: 64,
+    height: 72 / 64,
+    fontFamily: headerFontFamily,
   );
 }
