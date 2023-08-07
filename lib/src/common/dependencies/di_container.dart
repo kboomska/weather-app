@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:weather_service/src/feature/weather/data/api/weather_forecast_network_data_provider.dart';
+import 'package:weather_service/src/feature/weather/data/repository/weather_forecast_repository.dart';
 import 'package:weather_service/src/feature/login/data/api/login_network_data_provider.dart';
 import 'package:weather_service/src/feature/login/data/repository/login_repository.dart';
 import 'package:weather_service/src/feature/weather/widget/weather_screen.dart';
@@ -67,6 +68,12 @@ final class DIContainer {
   ILoginRepository _makeLoginRepository() => LoginRepositoryImpl(
         networkDataProvider: _makeLoginNetworkDataProvider(),
         firebaseAuth: _firebaseAuth,
+      );
+
+  /// Create [WeatherForecastRepositoryImpl]
+  IWeatherForecastRepository _makeWeatherForecastRepository() =>
+      WeatherForecastRepositoryImpl(
+        networkDataProvider: _makeWeatherForecastNetworkDataProvider(),
       );
 
   /// Create [LoginBloc]
