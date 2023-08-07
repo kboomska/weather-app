@@ -22,26 +22,23 @@ class WeatherForecastNetworkDataProviderImpl
     required String latitude,
     required String longitude,
   }) async {
-    final parameters = <String, dynamic>{};
-
     WeatherForecast parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final jsonResponse = WeatherForecast.fromJson(jsonMap);
       return jsonResponse;
     }
 
-    final result = _networkClient.post(
+    final result = _networkClient.get(
       Configuration.weatherHost,
       Configuration.weatherForecastUrl,
       parser,
-      parameters,
       <String, dynamic>{
         'lat': latitude,
         'lon': longitude,
         'untis': 'metric',
-        'cnt': 5,
+        'cnt': '5',
         'lang': 'ru',
-        'key': Configuration.weatherAppId,
+        'appid': Configuration.weatherAppId,
       },
     );
 

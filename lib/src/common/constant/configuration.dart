@@ -7,5 +7,5 @@ class Configuration {
   /// OpenWeather
   static const weatherHost = 'https://api.openweathermap.org';
   static const weatherForecastUrl = '/data/2.5/forecast';
-  static const weatherAppId = String.fromEnvironment('WEATHER_APP_ID');
+  static const weatherAppId = '72733294fe848ca35c7c26ef08550576';
 }

@@ -8,8 +8,9 @@ abstract interface class INetworkClient {
   Future<T> get<T>(
     String host,
     String path,
-    T Function(dynamic json) parser,
-  );
+    T Function(dynamic json) parser, [
+    Map<String, dynamic>? urlParameters,
+  ]);
 
   Future<T> post<T>(
     String host,
@@ -40,9 +41,14 @@ class NetworkClientImpl implements INetworkClient {
   Future<T> get<T>(
     String host,
     String path,
-    T Function(dynamic json) parser,
-  ) async {
-    final url = Uri.parse('$host$path');
+    T Function(dynamic json) parser, [
+    Map<String, dynamic>? urlParameters,
+  ]) async {
+    final url = _makeUri(
+      host,
+      path,
+      urlParameters,
+    );
 
     try {
       final request = await _httpClient.getUrl(url);
@@ -90,7 +96,8 @@ class NetworkClientImpl implements INetworkClient {
 extension HttpClientResponseJsonDecode on HttpClientResponse {
   Future<dynamic> jsonDecode() async {
     return transform(utf8.decoder).toList().then((jsonStrings) {
-      return jsonStrings.join();
+      final result = jsonStrings.join();
+      return result;
     }).then((jsonString) => json.decode(jsonString));
   }
 }

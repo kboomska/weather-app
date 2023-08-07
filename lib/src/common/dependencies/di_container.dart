@@ -7,6 +7,7 @@ import 'package:weather_service/src/feature/weather/data/api/weather_forecast_ne
 import 'package:weather_service/src/feature/weather/data/repository/weather_forecast_repository.dart';
 import 'package:weather_service/src/feature/login/data/api/login_network_data_provider.dart';
 import 'package:weather_service/src/feature/login/data/repository/login_repository.dart';
+import 'package:weather_service/src/feature/weather/bloc/weather_forecast_bloc.dart';
 import 'package:weather_service/src/feature/weather/widget/weather_screen.dart';
 import 'package:weather_service/src/feature/login/widget/login_screen.dart';
 import 'package:weather_service/src/common/network/network_client.dart';
@@ -80,6 +81,11 @@ final class DIContainer {
   LoginBloc _makeLoginBloc() => LoginBloc(
         loginRepository: _makeLoginRepository(),
       );
+
+  /// Create [WeatherForecastBloc]
+  WeatherForecastBloc _makeWeatherForecastBloc() => WeatherForecastBloc(
+        weatherForecastRepository: _makeWeatherForecastRepository(),
+      );
 }
 
 final class ScreenFactoryImpl implements IScreenFactory {
@@ -103,6 +109,10 @@ final class ScreenFactoryImpl implements IScreenFactory {
       providers: [
         BlocProvider(
           create: (_) => diContainer._makeLoginBloc(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (_) => diContainer._makeWeatherForecastBloc(),
         ),
       ],
       child: const WeatherScreen(),
