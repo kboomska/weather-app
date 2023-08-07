@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_service/src/common/resources/resources.dart';
 
 import 'package:weather_service/src/feature/weather/data/repository/weather_forecast_repository.dart';
 import 'package:weather_service/src/feature/weather/model/weather_prepared_data.dart';
@@ -100,7 +101,8 @@ class WeatherForecastBloc
             temperature: v.main?.temp?.round().toString() ?? '--',
             tempMin: v.main?.tempMin?.round().toString() ?? '',
             tempMax: v.main?.tempMax?.round().toString() ?? '',
-            description: v.weather?[0].description ?? '',
+            description: setDescription(v.weather?[0].icon ?? ''),
+            icon: setIcon(v.weather?[0].icon ?? ''),
             windSpeed: v.wind?.speed?.round().toString() ?? '',
             windDirection: v.wind?.deg.toString() ?? '',
             humidity: v.main?.humidity?.round().toString() ?? '',
@@ -112,5 +114,43 @@ class WeatherForecastBloc
       }
     }
     return result;
+  }
+
+  String setDescription(String rawIcon) {
+    switch (rawIcon) {
+      case '01d':
+        return 'Ясно';
+      case '04d':
+        return 'Облачно';
+      case '09d':
+        return 'Ливень';
+      case '10d':
+        return 'Дождь';
+      case '11d':
+        return 'Гроза';
+      case '13d':
+        return 'Снег';
+      default:
+        return 'Переменная облачность';
+    }
+  }
+
+  String setIcon(String rawIcon) {
+    switch (rawIcon) {
+      case '01d':
+        return AppIcons.clearSky;
+      case '04d':
+        return AppIcons.scarettedClouds;
+      case '09d':
+        return AppIcons.showerRain;
+      case '10d':
+        return AppIcons.rain;
+      case '11d':
+        return AppIcons.thunderstorm;
+      case '13d':
+        return AppIcons.snow;
+      default:
+        return AppIcons.clearSky;
+    }
   }
 }

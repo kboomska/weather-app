@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_service/src/common/resources/resources.dart';
 
 import 'package:weather_service/src/feature/weather/bloc/weather_forecast_bloc.dart';
 import 'package:weather_service/src/feature/login/bloc/login_bloc.dart';
@@ -113,9 +114,10 @@ class _CurrentWeatherWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(
+        SizedBox(
           height: 180.0,
           width: double.infinity,
+          child: Image.asset(AppIcons.clearSky),
         ),
         Text(
           '${currentData.temperature}°',
